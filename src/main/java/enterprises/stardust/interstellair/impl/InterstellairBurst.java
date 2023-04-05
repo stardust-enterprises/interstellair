@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 public class InterstellairBurst<T> extends Burst<T> {
     private static final Map<Class<?>, Supplier<Collection<?>>>
             ALLOCATION_TABLE = new HashMap<>();
-    private final T[] objects;
+    private final Object[] objects;
     private boolean used;
 
     public InterstellairBurst(T[] objects) {
@@ -24,31 +24,26 @@ public class InterstellairBurst<T> extends Burst<T> {
     }
 
     @Override
-    public <N> Burst<N> map(Function<T, N> mapper, N... reified) {
-        N[] mapped = (N[]) Array.newInstance(
-                objects.getClass().getComponentType(),
-                objects.length
-        );
-
+    public <N> Burst<N> map(Function<T, N> mapper) {
         for (int i = 0; i < objects.length; i++) {
-            T object = objects[i];
+            Object object = objects[i];
             if (object == null) {
-                mapped[i] = null;
+                objects[i] = null;
             } else {
-                mapped[i] = mapper.apply(object);
+                objects[i] = mapper.apply((T) object);
             }
         }
-        //FIXME: can we remove this allocation?
-        //idea: use unsafe reinterpret cast and make #objects an Object array
-        return new InterstellairBurst<>(mapped);
+        // This is a hack, basically a reinterpretation cast from T to N.
+        // This is safe because the array is in fact of type N after mapping.
+        return (Burst<N>) this;
     }
 
     @Override
     public Burst<T> filter(Predicate<T> filter) {
         for (int i = 0; i < objects.length; i++) {
-            T object = objects[i];
+            Object object = objects[i];
             if (object == null) continue;
-            if (!filter.test(object)) {
+            if (!filter.test((T) object)) {
                 objects[i] = null;
             }
         }
@@ -59,27 +54,33 @@ public class InterstellairBurst<T> extends Burst<T> {
     public T[] toArray() {
         terminalOperation();
 
+        //TODO: find out if reallocating the array is faster than copying
+        //existing elements inside #objects
+        long newArrayLength = internalCount();
+        if (newArrayLength > Integer.MAX_VALUE) {
+            throw new IllegalStateException("Array length is too big");
+        }
         T[] array = (T[])
-                Array.newInstance(objects.getClass().getComponentType(), internalCount());
+                Array.newInstance(objects.getClass().getComponentType(), (int) newArrayLength);
         int i = 0;
         for (int j = 0; j < objects.length; j++) {
-            T object = objects[j];
+            Object object = objects[j];
             if (object != null) {
-                array[i++] = object;
+                array[i++] = (T) object;
             }
         }
         return array;
     }
 
     @Override
-    public int count() {
+    public long count() {
         terminalOperation();
 
         return internalCount();
     }
 
-    private int internalCount() {
-        int count = 0;
+    private long internalCount() {
+        long count = 0L;
         for (int i = 0; i < objects.length; i++) {
             if (objects[i] != null) {
                 count++;
@@ -93,9 +94,9 @@ public class InterstellairBurst<T> extends Burst<T> {
         terminalOperation();
 
         for (int i = 0; i < objects.length; i++) {
-            T object = objects[i];
+            Object object = objects[i];
             if (object != null) {
-                collection.add(object);
+                collection.add((T) object);
             }
         }
         return collection;

@@ -13,13 +13,13 @@ import java.util.function.Predicate;
  */
 @SuppressWarnings("unchecked")
 public abstract class Burst<T> {
-    public abstract <N> Burst<N> map(Function<T, N> mapper, N... reified);
+    public abstract <N> Burst<N> map(Function<T, N> mapper);
 
     public abstract Burst<T> filter(Predicate<T> filter);
 
     public abstract T[] toArray();
 
-    public abstract int count();
+    public abstract long count();
 
     public abstract <C extends Collection<? super T>> C collect(C collection);
 

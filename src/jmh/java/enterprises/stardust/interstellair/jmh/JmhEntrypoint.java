@@ -1,6 +1,7 @@
 package enterprises.stardust.interstellair.jmh;
 
 import org.openjdk.jmh.Main;
+import org.openjdk.jmh.annotations.Mode;
 
 import java.io.IOException;
 
