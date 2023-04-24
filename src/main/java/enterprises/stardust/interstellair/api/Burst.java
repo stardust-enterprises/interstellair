@@ -1,4 +1,4 @@
-package enterprises.stardust.interstellair;
+package enterprises.stardust.interstellair.api;
 
 import enterprises.stardust.interstellair.impl.InterstellairBurst;
 
