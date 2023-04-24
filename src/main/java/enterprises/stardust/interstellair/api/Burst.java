@@ -5,6 +5,7 @@ import enterprises.stardust.interstellair.impl.InterstellairBurst;
 import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
 
 /**
  * @param <T> the objects type
@@ -24,6 +25,8 @@ public abstract class Burst<T> {
     public abstract <C extends Collection<? super T>> C collect(C collection);
 
     public abstract <C extends Collection<T>> C collect(C... reified);
+
+//    public abstract <C extends Collection<T>> C collect(Collector<T, ?, C> collector);
 
     public static <T> Burst<T> ofArray(T[] objects) {
         return new InterstellairBurst<>(objects);
