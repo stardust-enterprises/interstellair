@@ -105,6 +105,46 @@ public class InterstellairBurst<T> extends Burst<T> {
     }
 
     @Override
+    public Optional<T> min(Comparator<? super T> comparator) {
+        terminalOperation();
+
+        T min = null;
+        for (int i = 0; i < objects.length; i++) {
+            Object object = objects[i];
+            if (object != NULL_HOLDER) {
+                if (min == null) {
+                    min = (T) object;
+                } else {
+                    if (comparator.compare(min, (T) object) > 0) {
+                        min = (T) object;
+                    }
+                }
+            }
+        }
+        return Optional.ofNullable(min);
+    }
+
+    @Override
+    public Optional<T> max(Comparator<? super T> comparator) {
+        terminalOperation();
+
+        T max = null;
+        for (int i = 0; i < objects.length; i++) {
+            Object object = objects[i];
+            if (object != NULL_HOLDER) {
+                if (max == null) {
+                    max = (T) object;
+                } else {
+                    if (comparator.compare(max, (T) object) < 0) {
+                        max = (T) object;
+                    }
+                }
+            }
+        }
+        return Optional.ofNullable(max);
+    }
+
+    @Override
     public T[] toArray() {
         terminalOperation();
 

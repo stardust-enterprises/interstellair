@@ -3,10 +3,7 @@ package enterprises.stardust.interstellair.api;
 import enterprises.stardust.interstellair.impl.InterstellairBurst;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.*;
 import java.util.stream.BaseStream;
 import java.util.stream.Collector;
@@ -27,6 +24,10 @@ public abstract class Burst<T> implements BaseStream<T, Burst<T>>, Iterable<T> {
     public abstract void forEach(Consumer<? super T> action);
 
     public abstract long count();
+
+    public abstract Optional<T> min(Comparator<? super T> comparator);
+
+    public abstract Optional<T> max(Comparator<? super T> comparator);
 
     public abstract <C extends Collection<? super T>> C collect(C collection);
 
