@@ -6,5 +6,5 @@ pluginManagement {
     }
 }
 
-rootProject.name = "interstellar"
+rootProject.name = "interstellair"
 

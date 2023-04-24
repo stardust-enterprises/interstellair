@@ -1,6 +1,6 @@
 package enterprises.stardust.interstellair.jmh;
 
-import enterprises.stardust.interstellair.Burst;
+import enterprises.stardust.interstellair.api.Burst;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 

@@ -1,6 +1,6 @@
 package enterprises.stardust.interstellair.test;
 
-import enterprises.stardust.interstellair.Burst;
+import enterprises.stardust.interstellair.api.Burst;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;

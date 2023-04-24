@@ -1,6 +1,6 @@
 package enterprises.stardust.interstellair.impl;
 
-import enterprises.stardust.interstellair.Burst;
+import enterprises.stardust.interstellair.api.Burst;
 
 import java.lang.reflect.Array;
 import java.util.*;
