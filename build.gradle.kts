@@ -56,6 +56,26 @@ tasks {
             "Implementation-Vendor" to "Stardust Enterprises",
         )
     }
+
+    afterEvaluate {
+        // Task priority
+        val publishToSonatype by getting
+        val closeAndReleaseSonatypeStagingRepository by getting
+
+        closeAndReleaseSonatypeStagingRepository
+            .mustRunAfter(publishToSonatype)
+
+        // Wrapper task since calling both one after the other in IntelliJ
+        // seems to cause some problems.
+        create("releaseToSonatype") {
+            group = "publishing"
+
+            dependsOn(
+                publishToSonatype,
+                closeAndReleaseSonatypeStagingRepository
+            )
+        }
+    }
 }
 
 val artifactTasks = arrayOf(
@@ -105,7 +125,10 @@ publishing.publications {
         }
 
         // Configure the signing extension to sign this Maven artifact.
-        signing.sign(this)
+        signing {
+            isRequired = project.properties["signing.keyId"] != null
+            sign(this@create)
+        }
     }
 }
 
