@@ -17,9 +17,9 @@ public class InterstellairBurst<T> extends Burst<T> {
     private static final Map<Class<?>, Supplier<Collection<?>>>
         ALLOCATION_TABLE = new HashMap<>();
     public static final Object NULL_HOLDER = new Object();
-    private final Class<?> type;
     private final Object[] objects;
     private final List<Runnable> closeRunnables = new ArrayList<>();
+    private Class<?> type;
     private boolean used;
 
     public InterstellairBurst(T[] objects) {
