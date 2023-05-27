@@ -45,6 +45,7 @@ public class InterstellairBurst<T> extends Burst<T> {
                 objects[i] = NULL_HOLDER;
             } else {
                 objects[i] = mapper.apply((T) object);
+                this.type = objects[i].getClass();
             }
         }
         // This is a hack, basically a reinterpretation cast from T to N.
